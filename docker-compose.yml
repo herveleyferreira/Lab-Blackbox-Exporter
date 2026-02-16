@@ -1,0 +1,23 @@
+services:
+  nginx:
+    image: nginx
+    ports: 
+      - "8080:80"
+      
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    ports:
+      - "9115:9115"
+    volumes:
+      - ./blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    command: 
+      - --config.file=//etc/blackbox_exporter/config.yml
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
